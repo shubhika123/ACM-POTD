@@ -1,0 +1,68 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+//O(2n = n), O(n) coz stack bnaya - brute force
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* temp = head;
+        stack <int> st;
+
+        while (temp) {
+            int val = temp -> val;
+            st.push(val);
+            temp = temp -> next;
+        }
+
+        temp = head;   // ⚠️ Reset temp to head before rewriting
+
+        while (temp) {
+            temp -> val = st.top();
+            st.pop();
+            temp = temp -> next;  //⚠️ must move pointer ahead
+        }
+        return head;
+    }
+};
+
+//O(n), O(n) or O(1) if we ignore recursion stack space - RECURSIVE SOLN
+class Solution {
+public:
+    ListNode* reverseSolve(ListNode* head) {
+        if (!head || !head->next) return head;
+        
+        ListNode* last = reverseSolve(head->next);//arrow ulta krdia
+        head->next->next = head; //in 123, head=1, 2 ka next = head i.e 2 points to 1
+        head->next = NULL; //123, head=1, 1 points to NULL
+        return last;
+    }
+
+    ListNode* reverseList(ListNode* head) {
+        return reverseSolve(head);
+    }
+};
+
+
+//O(n), O(1) - ITERATIVE SOLN
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* prev = NULL; //starting mei head ka prev is null
+
+        while (head != NULL) { //till the end
+            ListNode* next = head->next; //Listnode* likhna hoga, direct next nhi likh skte
+            head->next = prev; //in 123, if head=1, next=2, 1->NULL
+            prev = head; //head = prev likhegi toh tune head = NULL krdia isliye wo galat h
+            head = next;
+        }
+        return prev;
+    }
+};
