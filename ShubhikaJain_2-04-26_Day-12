@@ -1,0 +1,29 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+ 
+ //O(n), O(1)
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        
+        ListNode* temp = head; //* used coz temp is a pointer and it will traverse the list
+
+        while (temp && temp->next) { //till the pointer(temp) is valid coz next next krte krte null ho skta h
+            if (temp->val == temp->next->val) {
+                temp->next = temp->next->next; //dont say temp->next->val coz fir node del ni hoga
+            }
+            else {
+                temp = temp->next; //v imp step to iterate & move to the next pointer
+            }
+        }
+        return head; //not temp coz head starting se saari values dega, temp last ki ya null value dega
+    }
+};
